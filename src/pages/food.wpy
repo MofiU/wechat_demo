@@ -1,0 +1,25 @@
+<template>
+  <view>
+    <sellerInfo />
+    <categoryList />
+  </view>
+</template>
+
+<script>
+
+  import wepy from 'wepy'
+  import SellerInfo from '@/components/seller-info'
+  import CategoryList from '@/components/category-list'
+
+  export default class Sixty extends wepy.page {
+    config = {
+      navigationBarTitleText: '食品列表'
+    }
+
+    components = {
+      sellerInfo: SellerInfo,
+      categoryList: CategoryList
+    }
+  }
+
+</script>

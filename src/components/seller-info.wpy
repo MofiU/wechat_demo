@@ -1,0 +1,88 @@
+<style lang="less">
+  /*店招*/
+  .hd {
+    background: #09f;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0 15px 0;
+    position:relative;
+  }
+
+  /*.hd:after {
+    content: " ";
+    height: 8px;
+    width: 8px;
+    border-width: 2px 2px 0 0;
+    border-color: #fff;
+    border-style: solid;
+    transform:rotate(45deg);
+    position: absolute;
+    margin-top: -4px;
+    top: 50%;
+    right: 22px;
+  }*/
+
+  /*logo*/
+  .logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 3px;
+    margin: 0 10px;
+  }
+
+  /*店名与公告*/
+  .banner {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    flex: 1;
+  }
+
+  /*店名*/
+  .seller {
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  /*公告*/
+  .notice {
+    margin-top: 15px;
+    font-size: 12px;
+  }
+
+  /*营业时间*/
+  .business-time {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+</style>
+<template>
+  <!-- 店招 -->
+  <view class="hd">
+    <image class="logo" src="{{seller.logo.url}}" />
+    <view class="banner">
+      <view class="seller">{{seller.name}}</view>
+      <view class="notice">{{seller.notice}}</view>
+      <view class="business-time">营业时间 {{seller.business_start}} - {{seller.business_end}}</view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class SellerInfo extends wepy.component {
+    data = {
+      seller: {
+        name: '这是店名',
+        notice: '店家通知',
+        business_start: '开始营业时间',
+        business_end: '停止营业时间'
+      },
+      logo: {
+        url: 'muyou'
+      }
+    }
+  }
+</script>
