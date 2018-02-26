@@ -197,18 +197,18 @@
   @connect({
     seller (state) {
       return state.seller.data
+    },
+    cartData (state) {
+      return state.cart.data
+    },
+    quantity (state) {
+      return state.cart.data.reduce((sum, cur) => { return sum + cur.quantity }, 0)
+    },
+    amount (state) {
+      return state.cart.data.reduce((sum, cur) => { return sum + cur.quantity * cur.food.price }, 0)
     }
   })
 
   export default class ShoppingCart extends wepy.component {
-    data = {
-      quantity: 4,
-      amount: 200,
-      cartData: [
-        { food: {id: 1, price: 30, title: '红烧猪手'}, quantity: 2 },
-        { food: {id: 2, price: 30, title: '香煎龙虾'}, quantity: 4 },
-        { food: {id: 3, price: 30, title: '芝麻羊肉'}, quantity: 2 }
-      ]
-    }
   }
 </script>

@@ -129,6 +129,18 @@
 
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+
+  @connect({
+    cartData (state) {
+      let data = {}
+      state.cart.data.forEach((item) => {
+        data[item.food.id] = item.quantity
+      })
+      return data
+    }
+
+  })
 
   export default class FoodList extends wepy.component {
     data = {
@@ -137,8 +149,7 @@
         { id: 2, title: '酥饼牛柳', summary: '镇店名菜', price: 78, thumb_url: 'http://img2.imgtn.bdimg.com/it/u=4243338074,3897581890&fm=27&gp=0.jpg' },
         { id: 3, title: '芝麻羊肉', summary: '经典菜式', price: 65, thumb_url: 'http://img2.imgtn.bdimg.com/it/u=4243338074,3897581890&fm=27&gp=0.jpg' },
         { id: 4, title: '黄金鸭舌', summary: '啧啧啧', price: 38, thumb_url: 'http://img2.imgtn.bdimg.com/it/u=4243338074,3897581890&fm=27&gp=0.jpg' }
-      ],
-      cartData: {1: 3, 2: 5, 3: 7}
+      ]
     }
   }
 </script>
