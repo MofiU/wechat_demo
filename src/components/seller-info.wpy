@@ -71,18 +71,15 @@
 </template>
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+
+  @connect({
+    seller (state) {
+      return state.seller.data
+    }
+  })
 
   export default class SellerInfo extends wepy.component {
-    data = {
-      seller: {
-        name: '这是店名',
-        notice: '店家通知',
-        business_start: '开始营业时间',
-        business_end: '停止营业时间'
-      },
-      logo: {
-        url: 'muyou'
-      }
-    }
+
   }
 </script>

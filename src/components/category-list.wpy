@@ -72,7 +72,7 @@
     <view class='category-container'>
       <!-- 分类单品 -->
       <block wx:for-items='{{categoryStates}}' wx:for-index='index' wx:for-item='item' wx:key='id'>
-        <view class="category-item {{ item.index ? 'category-item-active' : '' }}">
+        <view class="category-item {{ item.index ? 'category-item-active' : '' }}"  @tap="changeCategory({{item.id}})">
           <!-- 标题 -->
           <view class='category-content'>{{item.title}}</view>
           <!-- 数量红点 -->
@@ -85,19 +85,18 @@
 
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import { CHANGE_CATEGORY } from '../store/types/category'
+
+  @connect({
+    categoryStates (state) {
+      return state.category.data
+    }
+  }, {
+    changeCategory: CHANGE_CATEGORY
+  })
 
   export default class CategoryList extends wepy.component {
-    data = {
-      categoryStates: [
-        {
-          id: 1,
-          title: '牛肉',
-          index: true
-        }, {
-          id: 2,
-          title: '猪肉'
-        }
-      ]
-    }
+
   }
 </script>
