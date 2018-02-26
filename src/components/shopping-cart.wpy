@@ -1,0 +1,214 @@
+<style type="less">
+  /*购物车模块*/
+  .ft {
+    width: 100%;
+    height: 50px;
+    background: #474749;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex: row;
+    z-index: 999;
+  }
+
+  /*购物车容器*/
+  .cart-container {
+    width: 20%;
+    position: relative;
+  }
+
+  /*购物车图标*/
+  .cart {
+    position: absolute;
+    top: -8px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 5px solid #4d4d4f;
+  }
+
+  /*费用*/
+  .fee {
+    width: 50%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .express-fee:before {
+    content: '配送费￥';
+  }
+
+  /*菜品小计*/
+  .food-fee {
+    flex: 1;
+    line-height: 1.5;
+    font-size: 18px;
+    margin-left: 4px;
+  }
+
+  .food-fee:before {
+    content: '￥';
+  }
+
+  /*配送费*/
+  .express-fee {
+    flex: 1;
+    line-height: 1.5;
+    font-size: 12px;
+  }
+
+  /*结算按钮*/
+  .checkout {
+    width: 30%;
+    background: #38ca73;
+    color: white;
+    line-height: 50px;
+    text-align: center;
+  }
+
+  .checkout-disabled {
+    background: #666;
+    font-size: 14px;
+  }
+
+  /*购物车容器*/
+  /*弹窗主体*/
+  .modal-content {
+    position: fixed;
+    bottom: -235px;
+    left: 0;
+    width: 100%;
+    /*height: 235px;*/
+    /*box-shadow: 10rpx 0 30rpx rgba(0,0,0,.9);*/
+    margin-top: 5px;
+    background: #fff;
+    z-index: 99;
+  }
+
+  /*遮罩层*/
+  .modal-mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      opacity: 0;
+  }
+
+  /*弹窗头部*/
+  .modal-header {
+    font-size: 16px;
+    color: #666;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 30px;
+    padding: 4px 10px;
+    background: #eceff1;
+  }
+
+  /*购物车字样*/
+  .modal-title {
+    text-align: center;
+    flex: 1;
+  }
+
+  /*关闭按钮*/
+  .modal-close {
+    width: 20px;
+    height: 20px;
+  }
+
+  /*内容区域*/
+  .modal-body {
+    font-size: 14px;
+    /*height: 145px;*/
+    max-height: 295px;
+  }
+
+  .modal-body .item {
+    align-items: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  /*小计*/
+  .modal-body .fee {
+    color: #ff6000;
+    text-align: right;
+  }
+
+  .modal-body .fee:before {
+    content: '￥';
+  }
+</style>
+
+
+<template>
+  <!-- 购物车 -->
+  <view class="ft">
+    <view class="cart-container" @tap="cascadeToggle">
+      <view class="badge badge-offset" wx:if="{{quantity}}">{{quantity}}</view>
+      <image src="/images/cart.png" class="cart" />
+    </view>
+    <view class="fee" @tap="cascadeToggle">
+      <view wx:if="{{amount}}" class="food-fee">{{amount}}</view>
+      <view wx:if="{{amount}}" class="express-fee">{{seller.express_fee}}</view>
+    </view>
+    <view class="checkout {{amount - seller.min_amount >= 0 && amount > 0 ? '' : 'checkout-disabled'}}" @tap="{{amount - seller.min_amount >= 0 && amount > 0 ? 'checkout' : ''}}">{{amount - seller.min_amount >= 0 ? '去结算' : '还差' + (seller.min_amount - amount) + '元起送'}}</view>
+
+  </view>
+  <!-- 购物车容器 -->
+  <view class="modal">
+    <view animation="{{animationMask}}" class="modal-mask {{maskVisual}}" @tap="cascadeDismiss"></view>
+    <view animation="{{animationData}}" class="modal-content" style="height: {{cartHeight}}px; bottom: -{{cartHeight}}px;">
+      <view class="modal-header">
+        <text class="modal-title">购物车</text>
+        <image src="/images/close.png" class="modal-close" @tap="cascadeDismiss" />
+      </view>
+      <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
+        <view class="item" wx:for="{{cartObjects}}" wx:key="">
+          <view class="title">{{item.food.title}}</view>
+          <view class="fee">{{item.food.price * item.quantity}}</view>
+          <view class="stepper">
+          <!-- 减号 -->
+          <image src="/images/subtract.png" class="symbol" @tap="subtract" wx:if="{{cartData[item.food.id]}}" data-food-id="{{item.food.id}}" />
+          <!-- 数量 -->
+          <view class="value">{{cartData[item.food.id]}}</view>
+          <!-- 加号 -->
+          <image src="/images/add.png" class="symbol" @tap="add({{item.food.id}})" />
+        </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</template>
+
+
+<script>
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+
+  @connect({
+    seller (state) {
+      return state.seller.data
+    }
+  })
+
+  export default class ShoppingCart extends wepy.component {
+    data = {
+      quantity: 4,
+      amount: 200,
+      cartData: [
+        { food: {id: 1, price: 30, title: '红烧猪手'}, quantity: 2 },
+        { food: {id: 2, price: 30, title: '香煎龙虾'}, quantity: 4 },
+        { food: {id: 3, price: 30, title: '芝麻羊肉'}, quantity: 2 }
+      ]
+    }
+  }
+</script>

@@ -1,12 +1,4 @@
 <style lang='less'>
-  /*分类与菜品*/
-  .bd {
-    margin-top: 6px;
-    padding-bottom: 50px;
-    display: flex;
-    flex-direction: row;
-  }
-
   /*分类容器*/
   .category-container {
     width: 30%;
@@ -66,20 +58,17 @@
 </style>
 
 <template>
-  <!-- 菜品 -->
-  <view class='bd'>
-    <!-- 菜品分类 -->
-    <view class='category-container'>
-      <!-- 分类单品 -->
-      <block wx:for-items='{{categoryStates}}' wx:for-index='index' wx:for-item='item' wx:key='id'>
-        <view class="category-item {{ item.index ? 'category-item-active' : '' }}"  @tap="changeCategory({{item.id}})">
-          <!-- 标题 -->
-          <view class='category-content'>{{item.title}}</view>
-          <!-- 数量红点 -->
-          <!-- <view class='badge'>113</view> -->
-        </view>
-      </block>
-    </view>
+  <!-- 菜品分类 -->
+  <view class='category-container'>
+    <!-- 分类单品 -->
+    <repeat for="{{categoryStates}}" key="id" index="index" item="item">
+      <view class="category-item {{ item.index ? 'category-item-active' : '' }}"  @tap="changeCategory({{item.id}})">
+        <!-- 标题 -->
+        <view class='category-content'>{{item.title}}</view>
+        <!-- 数量红点 -->
+        <!-- <view class='badge'>113</view> -->
+      </view>
+  </repeat>
   </view>
 </template>
 

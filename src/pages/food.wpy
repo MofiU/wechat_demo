@@ -1,7 +1,20 @@
+<style type="less">
+  .bd {
+    margin-top: 6px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+  }
+</style>
+
 <template>
   <view>
     <sellerInfo />
-    <categoryList />
+    <view class="bd">
+      <categoryList />
+      <foodList />
+    </view>
+    <shoppingCart />
   </view>
 </template>
 
@@ -10,6 +23,8 @@
   import wepy from 'wepy'
   import SellerInfo from '@/components/seller-info'
   import CategoryList from '@/components/category-list'
+  import FoodList from '@/components/food-list'
+  import ShoppingCart from '@/components/shopping-cart'
 
   export default class Sixty extends wepy.page {
     config = {
@@ -18,7 +33,9 @@
 
     components = {
       sellerInfo: SellerInfo,
-      categoryList: CategoryList
+      categoryList: CategoryList,
+      foodList: FoodList,
+      shoppingCart: ShoppingCart
     }
   }
 

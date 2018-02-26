@@ -1,0 +1,144 @@
+<style lang='less'>
+  /*菜品列表容器*/
+  .food-container {
+    width: 70%;
+    /*box-sizing: border-box;*/
+    margin-left: 10px;
+  }
+
+  /*菜品列表*/
+  .food-item {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 0;
+    background: white;
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  /*主图容器*/
+  .food-hd {
+    width: 30%;
+  }
+
+  /*主图*/
+  .thumb {
+    width: 60px;
+    height: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    display: inline-table;
+  }
+
+  /*商品信息*/
+  .food-bd {
+    width: 70%;
+    margin-left: 10px;
+  }
+
+  /*菜名*/
+  .title {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 4px 0;
+    color: #333;
+    margin-left: 0;
+  }
+
+  /*简述*/
+  .summary {
+    padding: 4px 4px 4px 0;
+    font-size: 12px;
+    color: #9e9e9e;
+
+  }
+
+  /*价格与数量加减器*/
+  .price-stepper {
+    padding: 4px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  /*价格*/
+  .price {
+    flex: 1;
+    font-size: 18px;
+    color: #ff6000;
+  }
+
+  /*人民币符号*/
+  .price:before {
+    content: "￥";
+    font-size: 14px;
+  }
+
+  /*加减器*/
+  .stepper {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 5px;
+  }
+
+  /*加号*/
+  .symbol {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px;
+  }
+
+  /*数量*/
+  .value {
+    font-size: 14px;
+  }
+</style>
+
+<template>
+  <!-- 菜品列表 -->
+  <view class="food-container">
+    <!-- 菜品单品 -->
+    <repeat for="{{foods}}" key="id" index="index" item="item">
+      <view class="food-item">
+        <view class="food-hd">
+          <image class="thumb" mode="aspectFill" src="{{item.thumb_url}}" />
+        </view>
+        <view class="food-bd">
+          <view class="title">{{item.title}}</view>
+          <view class="summary">{{item.summary}}</view>
+          <view class="price-stepper">
+            <view class="price">{{item.price}}</view>
+            <view class="stepper">
+              <!-- 减号 -->
+              <image src="/images/subtract.png" class="symbol" @tap="subtract({{item.id}})" wx:if="{{cartData[item.id]}}" />
+              <!-- 数量 -->
+              <view class="value">{{cartData[item.id]}}</view>
+              <!-- 加号 -->
+              <image src="/images/add.png" class="symbol" @tap="add({{item.id}})" />
+            </view>
+          </view>
+        </view>
+      </view>
+    </repeat>
+    <!-- ./ food list -->
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class FoodList extends wepy.component {
+    data = {
+      foods: [
+        { id: 1, title: '香煎龙虾', summary: '回味无穷', price: 50, thumb_url: 'http://img2.imgtn.bdimg.com/it/u=4243338074,3897581890&fm=27&gp=0.jpg' },
+        { id: 2, title: '酥饼牛柳', summary: '镇店名菜', price: 78, thumb_url: 'http://img2.imgtn.bdimg.com/it/u=4243338074,3897581890&fm=27&gp=0.jpg' },
+        { id: 3, title: '芝麻羊肉', summary: '经典菜式', price: 65, thumb_url: 'http://img2.imgtn.bdimg.com/it/u=4243338074,3897581890&fm=27&gp=0.jpg' },
+        { id: 4, title: '黄金鸭舌', summary: '啧啧啧', price: 38, thumb_url: 'http://img2.imgtn.bdimg.com/it/u=4243338074,3897581890&fm=27&gp=0.jpg' }
+      ],
+      cartData: {1: 3, 2: 5, 3: 7}
+    }
+  }
+</script>

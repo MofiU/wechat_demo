@@ -11,8 +11,10 @@ export default handleActions({
     notice: '白刀子进红刀子出',
     business_start: '全天',
     business_end: '全天',
+    express_fee: 5,
+    min_amount: 30,
     logo: {
-      url: 'muyou'
+      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlmJuRY1IpPWLs9N-d18aCvZlfuD6JlEkkbKEy2CjEAECUvDSPkw'
     }
   }
 })
