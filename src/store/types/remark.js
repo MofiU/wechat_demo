@@ -1,0 +1,1 @@
+export const UPDATE_REMARK = 'UPDATE_REMARK'

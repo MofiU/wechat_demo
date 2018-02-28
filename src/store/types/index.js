@@ -1,5 +1,5 @@
 export * from './counter'
-export * from './sixty'
 export * from './category'
 export * from './seller'
 export * from './cart'
+export * from './remark'

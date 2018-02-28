@@ -150,42 +150,20 @@
 
 
 <template>
+
+
   <!-- 购物车 -->
   <view class="ft">
-    <view class="cart-container" @tap="cascadeToggle">
+    <view class="cart-container">
       <view class="badge badge-offset" wx:if="{{quantity}}">{{quantity}}</view>
       <image src="/images/cart.png" class="cart" />
     </view>
-    <view class="fee" @tap="cascadeToggle">
+    <view class="fee">
       <view wx:if="{{amount}}" class="food-fee">{{amount}}</view>
       <view wx:if="{{amount}}" class="express-fee">{{seller.express_fee}}</view>
     </view>
     <view class="checkout {{amount - seller.min_amount >= 0 && amount > 0 ? '' : 'checkout-disabled'}}" @tap="{{amount - seller.min_amount >= 0 && amount > 0 ? 'checkout' : ''}}">{{amount - seller.min_amount >= 0 ? '去结算' : '还差' + (seller.min_amount - amount) + '元起送'}}</view>
 
-  </view>
-  <!-- 购物车容器 -->
-  <view class="modal">
-    <view animation="{{animationMask}}" class="modal-mask {{maskVisual}}" @tap="cascadeDismiss"></view>
-    <view animation="{{animationData}}" class="modal-content" style="height: {{cartHeight}}px; bottom: -{{cartHeight}}px;">
-      <view class="modal-header">
-        <text class="modal-title">购物车</text>
-        <image src="/images/close.png" class="modal-close" @tap="cascadeDismiss" />
-      </view>
-      <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
-        <view class="item" wx:for="{{cartObjects}}" wx:key="">
-          <view class="title">{{item.food.title}}</view>
-          <view class="fee">{{item.food.price * item.quantity}}</view>
-          <view class="stepper">
-          <!-- 减号 -->
-          <image src="/images/subtract.png" class="symbol" @tap="subtract" wx:if="{{cartData[item.food.id]}}" data-food-id="{{item.food.id}}" />
-          <!-- 数量 -->
-          <view class="value">{{cartData[item.food.id]}}</view>
-          <!-- 加号 -->
-          <image src="/images/add.png" class="symbol" @tap="add({{item.food.id}})" />
-        </view>
-        </view>
-      </scroll-view>
-    </view>
   </view>
 </template>
 
@@ -193,6 +171,7 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
+  import { ADD, SUBTRACT } from '../store/types/cart'
 
   @connect({
     seller (state) {
@@ -205,10 +184,25 @@
       return state.cart.data.reduce((sum, cur) => { return sum + cur.quantity }, 0)
     },
     amount (state) {
-      return state.cart.data.reduce((sum, cur) => { return sum + cur.quantity * cur.food.price }, 0)
+      return state.cart.data.reduce((sum, cur) => { return sum + cur.quantity * cur.food.price }, 0) + state.seller.data.express_fee
     }
+  }, {
+    add: ADD,
+    subtract: SUBTRACT
   })
 
   export default class ShoppingCart extends wepy.component {
+    data = {
+      maxRowHeight: 5,
+      cartOffset: 90,
+      foodRowHeight: 49,
+      maskVisual: 'hidden'
+    }
+
+    methods = {
+      checkout () {
+        this.$root.$navigate('checkout')
+      }
+    }
   }
 </script>

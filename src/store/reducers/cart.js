@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { ADD, MINUS } from '../types/cart'
+import { ADD, SUBTRACT, CHECKOUT } from '../types/cart'
 
 
 const cartData = [
@@ -11,6 +11,15 @@ const cartData = [
 export default handleActions({
   [ADD] (state, action) {
     const id = action.payload[0]
+    state.data.find((item) => { return item.food.id === id  }).quantity += 1
+    return state
+  },
+  [SUBTRACT] (state, action) {
+    const id = action.payload[0]
+    state.data.find((item) => { return item.food.id === id  }).quantity -= 1
+    return state
+  },
+  [CHECKOUT] (state) {
     return state
   }
 }, {

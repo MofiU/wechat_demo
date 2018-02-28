@@ -26,9 +26,9 @@
   import FoodList from '@/components/food-list'
   import ShoppingCart from '@/components/shopping-cart'
 
-  export default class Sixty extends wepy.page {
+  export default class Food extends wepy.page {
     config = {
-      navigationBarTitleText: '食品列表'
+      navigationBarTitleText: '菜单'
     }
 
     components = {

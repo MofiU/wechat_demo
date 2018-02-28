@@ -1,14 +1,17 @@
 import { combineReducers } from 'redux'
 import counter from './counter'
-import sixty from './sixty'
 import category from './category'
 import seller from './seller'
 import cart from './cart'
+import food from './food'
+import remark from './remark'
+
 
 export default combineReducers({
   counter,
-  sixty,
   category,
   seller,
-  cart
+  cart,
+  food,
+  remark
 })
