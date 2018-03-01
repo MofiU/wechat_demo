@@ -5,7 +5,7 @@ import seller from './seller'
 import cart from './cart'
 import food from './food'
 import remark from './remark'
-
+import order from './order'
 
 export default combineReducers({
   counter,
@@ -13,5 +13,6 @@ export default combineReducers({
   seller,
   cart,
   food,
-  remark
+  remark,
+  order
 })

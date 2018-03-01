@@ -39,7 +39,7 @@
 
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import { UPDATE_REMARK } from '../store/types/remark'
+  import { UPDATE_REMARK } from '../../store/types/remark'
 
   @connect({
     remark (state) {

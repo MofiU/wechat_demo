@@ -1,0 +1,13 @@
+<template>
+  <!-- 空白占位 -->
+  <view class="holder">
+    <image src="/images/holder.png" />
+    <view>您还没有订单，赶快去下单吧</view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Holder extends wepy.component {
+  }
+</script>

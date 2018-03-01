@@ -1,0 +1,192 @@
+<style type="less">
+  page {
+    font-size: 16px;
+    color: #333;
+  }
+
+  /*每一行数据*/
+  .row {
+    background: white;
+    border-bottom: 15px;
+    padding: 0 15px;
+    margin-bottom: 10px;
+  }
+
+  /*商户信息*/
+  .shop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  /*logo*/
+  .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  /*名称与状态*/
+  .summary {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    height: 44px;
+    align-items: center;
+    flex: 1;
+  }
+
+  /*名称*/
+  .title {
+    margin-left: 10px;
+  }
+
+  /*状态*/
+  .status {
+    font-size: 14px;
+    text-align: right;
+  }
+
+  /*商品信息*/
+  .goods {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    height: 44px;
+    border-bottom: 1px solid #eee;
+  }
+
+  /*商品名称*/
+  .goods .title {
+    padding-left: 44px;
+    color: #666;
+  }
+
+  /*商品小计*/
+  .goods .total {
+    color: #000;
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .goods .total:before {
+    content: '￥';
+  }
+
+  /*支付按钮*/
+  .payment {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .payment .button {
+    margin: 14px 0;
+    border: solid 1px #f60;
+    border-radius: 3px;
+    padding: 7px 20px;
+    color: #f60;
+    font-size: 14px;
+  }
+
+  /*加载提示*/
+  /*上拉加载提示*/
+  .loading-indicator {
+    text-align: center;
+    font-size: 12px;
+    margin: 10px 0;
+    line-height: 300%;
+    margin-bottom: 100px;
+  }
+</style>
+
+<template>
+  <!-- 订单列表 -->
+  <view class="order-container">
+    <!-- 每个订单 -->
+    <repeat for="{{orderList}}" key="id" index="id" item="item">
+      <view class="row">
+        <!-- 商户信息 -->
+        <view class="shop">
+          <image src="{{item.avatar}}" class="logo" />
+          <view class="summary">
+            <view class="title">{{item.address}}</view>
+            <view class="status">
+              <block wx:if="{{item.status == 0}}">等待支付</block>
+              <block wx:elif="{{item.status == 1}}">待派送</block>
+              <block wx:elif="{{item.status == 2}}">派送中</block>
+              <block wx:elif="{{item.status == -1}}">已取消</block>
+            </view>
+          </view>
+        </view>
+        <!-- 商品信息 -->
+        <view class="goods">
+          <view class="title">{{item.title}} 等{{item.quantity}}件商品</view>
+          <view class="total">{{item.amount}}</view>
+        </view>
+        <!-- 支付按钮 -->
+        <view class="payment">
+          <view class="button" @tap="{{item.status == 0 ? 'payment' : 'showDetail'}}">
+            {{item.status == 0 ? '去支付' : '查看'}}
+          </view>
+        </view>
+      </view>
+    </repeat>
+  </view>
+  <view class="loading-indicator" @tap="load">
+    {{loadingTip}}
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import { LOAD } from '../../store/types/order'
+
+  @connect({
+    orderList (state) {
+      return state.order.data
+    },
+    orderTotalCount (state) {
+      return state.order.count
+    }
+  }, {
+    load: LOAD
+  })
+
+  export default class OrderList extends wepy.component {
+    data = {
+      loadingTip: ''
+    }
+
+    methods = {
+      showDetail () {
+        console.log('show detail')
+      },
+      payment () {
+        console.log('payment')
+      }
+    }
+
+    watch = {
+      orderList (newValue, oldValue) {
+        this.setLoadingTip()
+      }
+    }
+
+    onLoad () {
+      this.setLoadingTip()
+    }
+
+    setLoadingTip () {
+      if (this.orderList.length < this.orderTotalCount) {
+        this.loadingTip = '显示更多'
+      } else {
+        this.loadingTip = '没有更多订单'
+      }
+      this.$apply()
+    }
+  }
+</script>

@@ -1,0 +1,35 @@
+<template>
+  <block wx:if="{{orderTotalCount === 0}}">
+    <!-- 空白占位 -->
+    <holder />
+  </block>
+  <block wx:elif="{{orderTotalCount !== 0}}">
+    <orderList />
+  </block>
+
+</template>
+
+<script>
+
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import Holder from '@/components/order/holder'
+  import OrderList from '@/components/order/order-list'
+
+  @connect({
+    orderTotalCount (state) {
+      return state.order.count
+    }
+  })
+  export default class List extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的订单'
+    }
+
+    components = {
+      holder: Holder,
+      orderList: OrderList
+    }
+  }
+
+</script>

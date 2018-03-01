@@ -201,7 +201,7 @@
 
     methods = {
       checkout () {
-        this.$root.$navigate('checkout')
+        this.$root.$navigate('order/checkout')
       }
     }
   }

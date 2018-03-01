@@ -249,7 +249,7 @@
           title: '订单创建成功',
           showCancel: false,
           success: function(res) {
-            wx.switchTab({url: '/pages/order'})
+            wx.switchTab({url: '/pages/order/list'})
           }
         })
       }

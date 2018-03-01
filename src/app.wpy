@@ -162,9 +162,9 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/food',
-      'pages/order',
-      'pages/checkout',
-      'pages/remark'
+      'pages/order/checkout',
+      'pages/order/list',
+      'pages/order/remark'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -182,7 +182,7 @@ export default class extends wepy.app {
           selectedIconPath: 'images/icon_home_selected.png'
         },
         {
-          pagePath: 'pages/order',
+          pagePath: 'pages/order/list',
           iconPath: 'images/icon_cate.png',
           selectedIconPath: 'images/icon_cate_selected.png',
           text: '订单'
@@ -207,7 +207,7 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
-    this.testAsync()
+    // this.testAsync()
   }
 
   sleep (s) {
