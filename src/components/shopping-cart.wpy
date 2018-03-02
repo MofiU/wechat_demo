@@ -159,10 +159,10 @@
       <image src="/images/cart.png" class="cart" />
     </view>
     <view class="fee">
-      <view wx:if="{{amount}}" class="food-fee">{{amount}}</view>
-      <view wx:if="{{amount}}" class="express-fee">{{seller.express_fee}}</view>
+      <view class="food-fee">{{amount}}</view>
+      <!-- <view wx:if="{{amount}}" class="express-fee">{{seller.express_fee}}</view> -->
     </view>
-    <view class="checkout {{amount - seller.min_amount >= 0 && amount > 0 ? '' : 'checkout-disabled'}}" @tap="{{amount - seller.min_amount >= 0 && amount > 0 ? 'checkout' : ''}}">{{amount - seller.min_amount >= 0 ? '去结算' : '还差' + (seller.min_amount - amount) + '元起送'}}</view>
+    <view class="checkout {{amount > 0 ? '' : 'checkout-disabled'}}" @tap="{{amount > 0 ? 'checkout' : ''}}">{{amount > 0 ? '去结算' : '请点单'}}</view>
 
   </view>
 </template>
@@ -178,13 +178,20 @@
       return state.seller.data
     },
     cartData (state) {
-      return state.cart.data
+      return state.cart
     },
     quantity (state) {
-      return state.cart.data.reduce((sum, cur) => { return sum + cur.quantity }, 0)
+      return Object.values(state.cart).reduce((a, b) => { return a + b }, 0)
     },
     amount (state) {
-      return state.cart.data.reduce((sum, cur) => { return sum + cur.quantity * cur.food.price }, 0) + state.seller.data.express_fee
+      let foods = state.food.data
+      let sum = 0
+      let cartData = state.cart
+      for (var id in cartData) {
+        let food = foods.find((food) => { return food.id === parseInt(id) })
+        sum += food.price * cartData[id]
+      }
+      return sum
     }
   }, {
     add: ADD,
@@ -192,13 +199,6 @@
   })
 
   export default class ShoppingCart extends wepy.component {
-    data = {
-      maxRowHeight: 5,
-      cartOffset: 90,
-      foodRowHeight: 49,
-      maskVisual: 'hidden'
-    }
-
     methods = {
       checkout () {
         this.$root.$navigate('order/checkout')

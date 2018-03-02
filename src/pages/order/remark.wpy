@@ -27,9 +27,9 @@
 
 <template>
   <!-- 地址选择 -->
-  <form @submit="updateRemark">
+  <form @submit="setRemark">
     <view class="textarea-container">
-      <textarea value="{{remark}}" name="remark" placeholder="请输入备注内容(可不填)" maxlength="-1" auto-height />
+      <textarea value="{{remark}}" name="remark" placeholder="请输入备注内容(可不填)" maxlength="-1" auto-height ></textarea>
     </view>
     <button form-type="submit">确定</button>
   </form>
@@ -38,15 +38,13 @@
 <script>
 
   import wepy from 'wepy'
-  import { connect } from 'wepy-redux'
-  import { UPDATE_REMARK } from '../../store/types/remark'
+  import { connect, getStore } from 'wepy-redux'
+  // import { UPDATE_REMARK } from '../../store/types/remark'
 
   @connect({
     remark (state) {
       return state.remark.data
     }
-  }, {
-    updateRemark: UPDATE_REMARK
   })
 
   export default class Remark extends wepy.page {
@@ -54,14 +52,18 @@
       navigationBarTitleText: '添加备注'
     }
 
-    watch = {
-      remark (newValue, oldValue) {
-        wepy.navigateBack()
-      }
-    }
+    // watch = {
+    //   remark (newValue, oldValue) {
+    //     wepy.navigateBack()
+    //   }
+    // }
 
     methods = {
       setRemark (e) {
+        const newRemark = e.detail.value.remark
+        const store = getStore()
+        store.dispatch({type: 'UPDATE_REMARK', payload: newRemark})
+        wepy.navigateBack()
       }
     }
   }

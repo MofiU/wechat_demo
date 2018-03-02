@@ -1,10 +1,14 @@
 import { handleActions } from 'redux-actions'
-import { UPDATE_REMARK } from '../types/remark'
+import { UPDATE_REMARK, CLEANUP } from '../types/remark'
 
 export default handleActions({
   [UPDATE_REMARK] (state, action) {
-    const value = action.payload.detail.value.remark
+    console.log(action)
+    const value = action.payload
     return {data: value}
+  },
+  [CLEANUP] (state) {
+    return {data: null}
   }
 }, {
   data: null

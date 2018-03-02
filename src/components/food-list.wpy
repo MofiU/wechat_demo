@@ -134,11 +134,7 @@
 
   @connect({
     cartData (state) {
-      let data = {}
-      state.cart.data.forEach((item) => {
-        data[item.food.id] = item.quantity
-      })
-      return data
+      return state.cart
     },
     foods (state) {
       return state.food.data
