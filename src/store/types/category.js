@@ -1,3 +1,5 @@
 export const CHANGE_CATEGORY = 'CHANGE_CATEGORY'
 
+export const LOAD_CATEGORY = 'LOAD_CATEGORY'
+
 

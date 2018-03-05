@@ -100,37 +100,40 @@
 <template>
   <!-- 菜品列表 -->
   <view class="food-container">
+    <scroll-view scroll-y scroll-with-animation style="height: 1000px;">
     <!-- 菜品单品 -->
-    <repeat for="{{foods}}" key="id" index="index" item="item">
+    <repeat for="{{foods}}" key="_id" index="_id" item="item">
       <view class="food-item">
         <view class="food-hd">
           <image class="thumb" mode="aspectFill" src="{{item.thumb_url}}" />
         </view>
         <view class="food-bd">
-          <view class="title">{{item.title}}</view>
-          <view class="summary">{{item.summary}}</view>
+          <view class="title">{{item.name}}</view>
+          <view class="summary">{{item.description}}</view>
           <view class="price-stepper">
-            <view class="price">{{item.price}}</view>
+            <view class="price">{{item.pricePerUnit}}</view>
             <view class="stepper">
               <!-- 减号 -->
-              <image src="/images/subtract.png" class="symbol" @tap="subtract({{item.id}})" wx:if="{{cartData[item.id]}}" />
+              <image src="/images/subtract.png" class="symbol" @tap="subtract({{item._id}})" wx:if="{{cartData[item._id]}}" />
               <!-- 数量 -->
-              <view class="value">{{cartData[item.id]}}</view>
+              <view class="value">{{cartData[item._id]}}</view>
               <!-- 加号 -->
-              <image src="/images/add.png" class="symbol" @tap="add({{item.id}})" />
+              <image src="/images/add.png" class="symbol" @tap="add({{item._id}})" />
             </view>
           </view>
         </view>
       </view>
     </repeat>
     <!-- ./ food list -->
+  </scroll-view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import { connect } from 'wepy-redux'
+  import { connect, getStore } from 'wepy-redux'
   import { ADD, SUBTRACT } from '../store/types/cart'
+  import { getProducts } from '../api/product'
 
   @connect({
     cartData (state) {
@@ -145,6 +148,12 @@
   })
 
   export default class FoodList extends wepy.component {
-
+    onLoad () {
+      const store = getStore()
+      getProducts().then((data) => {
+        delete data.length
+        store.dispatch({type: 'LOAD_PRODUCT', payload: Object.values(data)})
+      })
+    }
   }
 </script>

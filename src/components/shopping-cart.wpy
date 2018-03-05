@@ -189,7 +189,7 @@
       let cartData = state.cart
       for (var id in cartData) {
         let food = foods.find((food) => { return food.id === parseInt(id) })
-        sum += food.price * cartData[id]
+        sum += parseFloat(food.pricePerUnit) * cartData[id]
       }
       return sum
     }

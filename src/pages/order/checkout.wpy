@@ -182,9 +182,9 @@
       <view class="list">
         <repeat for="{{cartData}}" key="id" index="index" item="item">
           <view class="item">
-            <view class="title">{{item.title}}</view>
+            <view class="title">{{item.name}}</view>
             <view class="quantity">{{item.quantity}}</view>
-            <view class="price">{{item.price}}</view>
+            <view class="price">{{item.pricePerUnit}}</view>
           </view>
         </repeat>
 
@@ -226,7 +226,7 @@
       let result = []
       let foods = state.food.data
       for (var id in state.cart) {
-        let food = foods.find((food) => { return food.id === parseInt(id) })
+        let food = foods.find((food) => { return food._id === id })
         result.push({
           ...food,
           quantity: state.cart[id]
@@ -239,8 +239,8 @@
       let sum = 0
       let cartData = state.cart
       for (var id in cartData) {
-        let food = foods.find((food) => { return food.id === parseInt(id) })
-        sum += food.price * cartData[id]
+        let food = foods.find((food) => { return food._id === id })
+        sum += parseFloat(food.pricePerUnit) * cartData[id]
       }
       return sum
     },

@@ -1,19 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { CHANGE_CATEGORY } from '../types/category'
-
-
-const initCategoryData = [
-  {
-    id: 1,
-    title: '牛肉'
-  }, {
-    id: 2,
-    title: '猪肉'
-  }, {
-    id: 3,
-    title: '亮仔肉'
-  }
-]
+import { CHANGE_CATEGORY, LOAD_CATEGORY } from '../types/category'
 
 const loadData = (data) => {
   data[0].index = true
@@ -23,18 +9,21 @@ const loadData = (data) => {
 const changeCategory = (data, id) => {
   data.forEach((v) => { delete v.index })
   data.find((category) => {
-    return category.id === id
+    return category._id === id
   }).index = true
   return data
 }
 
 export default handleActions({
   [CHANGE_CATEGORY] (state, action) {
-    const categoryId = action.payload[0]
+    const id = action.payload[0]
     return {
-      data: changeCategory(initCategoryData, categoryId)
+      data: changeCategory(state.data, id)
     }
+  },
+  [LOAD_CATEGORY] (state, action) {
+    return { data: loadData(action.payload) }
   }
 }, {
-  data: loadData(initCategoryData)
+  data: null
 })

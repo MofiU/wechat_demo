@@ -61,10 +61,10 @@
   <!-- 菜品分类 -->
   <view class='category-container'>
     <!-- 分类单品 -->
-    <repeat for="{{categoryStates}}" key="id" index="index" item="item">
-      <view class="category-item {{ item.index ? 'category-item-active' : '' }}"  @tap="changeCategory({{item.id}})">
+    <repeat for="{{categoryStates}}" key="_id" index="_id" item="item">
+      <view class="category-item {{ item.index ? 'category-item-active' : '' }}"  @tap="changeCategory({{item._id}})">
         <!-- 标题 -->
-        <view class='category-content'>{{item.title}}</view>
+        <view class='category-content'>{{item.name}}</view>
         <!-- 数量红点 -->
         <!-- <view class='badge'>113</view> -->
       </view>
@@ -74,8 +74,9 @@
 
 <script>
   import wepy from 'wepy'
-  import { connect } from 'wepy-redux'
+  import { connect, getStore } from 'wepy-redux'
   import { CHANGE_CATEGORY } from '../store/types/category'
+  import { getCategories } from '../api/category'
 
   @connect({
     categoryStates (state) {
@@ -86,6 +87,12 @@
   })
 
   export default class CategoryList extends wepy.component {
-
+    onLoad () {
+      const store = getStore()
+      getCategories().then((data) => {
+        delete data.length
+        store.dispatch({type: 'LOAD_CATEGORY', payload: Object.values(data)})
+      })
+    }
   }
 </script>
