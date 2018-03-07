@@ -280,7 +280,6 @@
             wepy.switchTab({url: '/pages/order/list'})
           })
         }, (res) => {
-          console.error('system error', res)
           wepy.showModal({
             title: '系统故障，请稍后再试',
             showCancel: false

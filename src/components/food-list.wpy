@@ -101,31 +101,31 @@
   <!-- 菜品列表 -->
   <view class="food-container">
     <scroll-view scroll-y scroll-with-animation style="height: {{scrollHeight + 'px'}}">
-    <!-- 菜品单品 -->
-    <repeat for="{{foods}}" key="_id" index="_id" item="item">
-      <view class="food-item" id="{{item._id}}">
-        <view class="food-hd">
-          <image class="thumb" mode="aspectFill" src="http://www.bizfinmag.com/cms/wp-content/uploads/2017/03/%E9%A5%AE%E5%93%81%E6%95%B0%E7%A0%81%E5%8C%96.jpg" />
-        </view>
-        <view class="food-bd">
-          <view class="title">{{item.name}}</view>
-          <view class="summary">{{item.description}}</view>
-          <view class="price-stepper">
-            <view class="price">{{item.pricePerUnit}}</view>
-            <view class="stepper">
-              <!-- 减号 -->
-              <image src="/images/subtract.png" class="symbol" @tap="subtract({{item._id}})" wx:if="{{cartData[item._id]}}" />
-              <!-- 数量 -->
-              <view class="value">{{cartData[item._id]}}</view>
-              <!-- 加号 -->
-              <image src="/images/add.png" class="symbol" @tap="add({{item._id}})" />
+      <!-- 菜品单品 -->
+      <repeat for="{{foods}}" key="_id" index="_id" item="item">
+        <view class="food-item" id="{{item._id}}">
+          <view class="food-hd">
+            <image class="thumb" mode="aspectFill" src="http://www.bizfinmag.com/cms/wp-content/uploads/2017/03/%E9%A5%AE%E5%93%81%E6%95%B0%E7%A0%81%E5%8C%96.jpg" />
+          </view>
+          <view class="food-bd">
+            <view class="title">{{item.name}}</view>
+            <view class="summary">{{item.description}}</view>
+            <view class="price-stepper">
+              <view class="price">{{item.pricePerUnit}}</view>
+              <view class="stepper">
+                <!-- 减号 -->
+                <image src="/images/subtract.png" class="symbol" @tap="subtract({{item._id}})" wx:if="{{cartData[item._id]}}" />
+                <!-- 数量 -->
+                <view class="value">{{cartData[item._id]}}</view>
+                <!-- 加号 -->
+                <image src="/images/add.png" class="symbol" @tap="add({{item._id}})" />
+              </view>
             </view>
           </view>
         </view>
-      </view>
-    </repeat>
-    <!-- ./ food list -->
-  </scroll-view>
+      </repeat>
+      <!-- ./ food list -->
+    </scroll-view>
   </view>
 </template>
 
