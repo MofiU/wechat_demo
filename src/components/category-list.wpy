@@ -62,7 +62,7 @@
   <view class='category-container'>
     <!-- 分类单品 -->
     <repeat for="{{categoryStates}}" key="_id" index="_id" item="item">
-      <view class="category-item {{ item.index ? 'category-item-active' : '' }}"  @tap="changeCategory({{item._id}})">
+      <view class="category-item {{ item._id === currentCategoryId ? 'category-item-active' : '' }}"  @tap="changeCategory({{item._id}})">
         <!-- 标题 -->
         <view class='category-content'>{{item.name}}</view>
         <!-- 数量红点 -->
@@ -75,24 +75,38 @@
 <script>
   import wepy from 'wepy'
   import { connect, getStore } from 'wepy-redux'
-  import { CHANGE_CATEGORY } from '../store/types/category'
-  import { getCategories } from '../api/category'
+  import { getProductByCategory } from '../api/product'
 
   @connect({
     categoryStates (state) {
       return state.category.data
     }
-  }, {
-    changeCategory: CHANGE_CATEGORY
   })
 
   export default class CategoryList extends wepy.component {
-    onLoad () {
-      const store = getStore()
-      getCategories().then((data) => {
-        delete data.length
-        store.dispatch({type: 'LOAD_CATEGORY', payload: Object.values(data)})
-      })
+    data = {
+      currentCategoryId: null
+    }
+
+    methods = {
+      changeCategory (categoryId) {
+        this.currentCategoryId = categoryId
+        this.$apply()
+      }
+    }
+
+    watch = {
+      currentCategoryId (newCategoryId, oldCategoryId) {
+        const store = getStore()
+        getProductByCategory(newCategoryId).then((data) => {
+          delete data.length
+          store.dispatch({type: 'LOAD_PRODUCT', payload: Object.values(data)})
+        })
+      },
+      categoryStates (newCategoryStates, oldCategoryStates) {
+        this.currentCategoryId = newCategoryStates[0]._id
+        this.$apply()
+      }
     }
   }
 </script>

@@ -99,7 +99,7 @@
   }
 
   .footer .payment:before {
-    content: "待支付￥"
+    content: "待支付$"
   }
 
   .footer .checkout {
@@ -214,6 +214,7 @@
 
   import wepy from 'wepy'
   import { connect, getStore } from 'wepy-redux'
+  import { createOrder, getOrders } from '../../api/order'
 
   @connect({
     foods (state) {
@@ -224,7 +225,7 @@
     },
     cartData (state) {
       let result = []
-      let foods = state.food.data
+      let foods = state.food.list
       for (var id in state.cart) {
         let food = foods.find((food) => { return food._id === id })
         result.push({
@@ -235,7 +236,7 @@
       return result
     },
     amount (state) {
-      let foods = state.food.data
+      let foods = state.food.list
       let sum = 0
       let cartData = state.cart
       for (var id in cartData) {
@@ -259,15 +260,31 @@
         this.$navigate('remark')
       },
       payment () {
-        wx.showModal({
-          title: '订单创建成功',
-          showCancel: false,
-          success: function(res) {
+        const store = getStore()
+        createOrder(this.cartData, this.amount).then(() => {
+          wepy.showModal({
+            title: '订单创建成功',
+            showCancel: false
+          }).then((res) => {
             // 清理remark以及购物车数据
-            const store = getStore()
             store.dispatch({type: 'CLEANUP'})
-            wx.switchTab({url: '/pages/order/list'})
-          }
+            // 重新加载订单
+            getOrders().then((data) => {
+              const count = data.length
+              delete data.length
+              store.dispatch({
+                type: 'LOAD_ORDER',
+                payload: { data: Object.values(data), count: count }
+              })
+            })
+            wepy.switchTab({url: '/pages/order/list'})
+          })
+        }, (res) => {
+          console.error('system error', res)
+          wepy.showModal({
+            title: '系统故障，请稍后再试',
+            showCancel: false
+          })
         })
       }
     }

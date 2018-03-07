@@ -1,1 +1,2 @@
 export const LOAD_PRODUCT = 'LOAD_PRODUCT'
+export const LOAD_PRODUCT_LIST = 'LOAD_PRODUCT_LIST'

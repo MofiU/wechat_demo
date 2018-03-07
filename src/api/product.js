@@ -11,3 +11,17 @@ export async function getProducts () {
   })
   return result
 }
+
+export async function getProductByCategory (categoryId) {
+  let result =  await wepy.request({
+    url: host + 'merchants/categories/products',
+    method: 'POST',
+    header: header,
+    data: {
+      'categories': [{'_id': categoryId}]
+    }
+  }).then((res) => {
+    return res.data.result
+  })
+  return result
+}

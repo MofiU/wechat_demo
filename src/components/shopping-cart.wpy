@@ -39,7 +39,7 @@
   }
 
   .express-fee:before {
-    content: '配送费￥';
+    content: '配送费$';
   }
 
   /*菜品小计*/
@@ -51,7 +51,7 @@
   }
 
   .food-fee:before {
-    content: '￥';
+    content: '$';
   }
 
   /*配送费*/
@@ -144,7 +144,7 @@
   }
 
   .modal-body .fee:before {
-    content: '￥';
+    content: '$';
   }
 </style>
 
@@ -184,11 +184,11 @@
       return Object.values(state.cart).reduce((a, b) => { return a + b }, 0)
     },
     amount (state) {
-      let foods = state.food.data
+      let foods = state.food.list
       let sum = 0
       let cartData = state.cart
       for (var id in cartData) {
-        let food = foods.find((food) => { return food.id === parseInt(id) })
+        let food = foods.find((food) => { return food._id === id })
         sum += parseFloat(food.pricePerUnit) * cartData[id]
       }
       return sum
