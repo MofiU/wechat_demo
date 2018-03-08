@@ -1,0 +1,30 @@
+<style type="less">
+  .loading-icon{
+    width: 60px;
+    height: 50px;
+    margin-top: 50%;
+  }
+  .column-center{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+</style>
+
+<template>
+  <view class="column-center" wx:if="{{!init}}">
+    <image src="/images/loading.svg" class="loading-icon"></image>
+  </view>
+</template>
+
+<script>
+
+  import wepy from 'wepy'
+
+  export default class Loading extends wepy.component {
+    props = {
+      init: {}
+    }
+  }
+</script>

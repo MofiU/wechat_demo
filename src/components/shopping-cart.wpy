@@ -170,8 +170,9 @@
 
 <script>
   import wepy from 'wepy'
-  import { connect } from 'wepy-redux'
+  import { connect, getStore } from 'wepy-redux'
   import { ADD, SUBTRACT } from '../store/types/cart'
+  import { getProducts } from '../api/product'
 
   @connect({
     seller (state) {
@@ -203,6 +204,14 @@
       checkout () {
         this.$root.$navigate('order/checkout')
       }
+    }
+
+    onLoad () {
+      const store = getStore()
+      getProducts().then((data) => {
+        delete data.length
+        store.dispatch({type: 'LOAD_PRODUCT_LIST', payload: Object.values(data)})
+      })
     }
   }
 </script>

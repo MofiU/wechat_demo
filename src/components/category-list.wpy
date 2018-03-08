@@ -75,38 +75,29 @@
 <script>
   import wepy from 'wepy'
   import { connect, getStore } from 'wepy-redux'
-  import { getProductByCategory } from '../api/product'
+  import { getCategories } from '../api/category'
+  import { CHANGE_CATEGORY } from '../store/types/category'
 
   @connect({
     categoryStates (state) {
       return state.category.data
+    },
+    currentCategoryId (state) {
+      return state.category.currentCategoryId
     }
+  }, {
+    changeCategory: CHANGE_CATEGORY
   })
 
   export default class CategoryList extends wepy.component {
-    data = {
-      currentCategoryId: null
-    }
-
-    methods = {
-      changeCategory (categoryId) {
-        this.currentCategoryId = categoryId
-        this.$apply()
-      }
-    }
-
-    watch = {
-      currentCategoryId (newCategoryId, oldCategoryId) {
-        const store = getStore()
-        getProductByCategory(newCategoryId).then((data) => {
-          delete data.length
-          store.dispatch({type: 'LOAD_PRODUCT', payload: Object.values(data)})
-        })
-      },
-      categoryStates (newCategoryStates, oldCategoryStates) {
-        this.currentCategoryId = newCategoryStates[0]._id
-        this.$apply()
-      }
+    onLoad () {
+      const store = getStore()
+      getCategories().then((data) => {
+        delete data.length
+        let categories = Object.values(data)
+        store.dispatch({type: 'LOAD_CATEGORY', payload: categories})
+        store.dispatch({type: 'CHANGE_CATEGORY', payload: [categories[0]._id]})
+      })
     }
   }
 </script>

@@ -124,7 +124,7 @@
           </view>
           <!-- 商品信息 -->
           <view class="goods">
-            <view class="title">{{item.description}}</view>
+            <view class="title">下单时间: {{item.orderedAt.$date}}</view>
             <view class="total">{{item.totalAmount}}</view>
           </view>
           <!-- 支付按钮 -->
@@ -154,7 +154,7 @@
   export default class OrderList extends wepy.component {
     data = {
       scrollHeight: 0,
-      toView: null
+      showLoading: true
     }
 
     methods = {

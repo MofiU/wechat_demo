@@ -9,8 +9,12 @@ export default handleActions({
     }
   },
   [LOAD_CATEGORY] (state, action) {
-    return { data: action.payload }
+    return {
+      ...state,
+      data: action.payload
+    }
   }
 }, {
-  data: null
+  data: null,
+  currentCategoryId: null
 })

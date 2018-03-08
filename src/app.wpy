@@ -155,8 +155,6 @@ import 'wepy-async-function'
 import { setStore } from 'wepy-redux'
 import configStore from './store'
 import { getOrders } from './api/order'
-import { getCategories } from './api/category'
-import { getProducts } from './api/product'
 
 const store = configStore()
 setStore(store)
@@ -210,16 +208,6 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
-    getCategories().then((data) => {
-      delete data.length
-      store.dispatch({type: 'LOAD_CATEGORY', payload: Object.values(data)})
-    })
-
-    getProducts().then((data) => {
-      delete data.length
-      store.dispatch({type: 'LOAD_PRODUCT_LIST', payload: Object.values(data)})
-    })
-
     getOrders().then((data) => {
       const count = data.length
       delete data.length

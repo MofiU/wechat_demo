@@ -3,7 +3,7 @@
     <!-- 空白占位 -->
     <holder />
   </block>
-  <block wx:elif="{{orderTotalCount !== 0}}">
+  <block wx:else>
     <orderList />
   </block>
 

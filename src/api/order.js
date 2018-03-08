@@ -7,7 +7,7 @@ export async function getOrders () {
     method: 'POST',
     header: header,
     data: {
-      "customer" : {"_id": "customer/0b938d76-51c3-4378-ae4b-ab534e067cab"}
+      "customer" : {"_id": "customer/d1998552-9bf8-4b64-b85c-d8a792f469f4"}
     }
   }).then((res) => {
     return res.data.result.salesOrderRecords
@@ -37,7 +37,7 @@ export async function createOrder (cartData, amount) {
           '_id': 'store/5d1d2e31-c8e8-42cd-ad90-4e93350cc19f'
         },
         'customer': {
-          '_id': 'customer/0b938d76-51c3-4378-ae4b-ab534e067cab'
+          '_id': 'customer/d1998552-9bf8-4b64-b85c-d8a792f469f4'
         },
         'salesOrderLineItems': salesOrderLineItems
       }

@@ -9,7 +9,8 @@
 </style>
 
 <template>
-  <view>
+  <loadingView :init.sync="init"/>
+  <view hidden="{{!init}}">
     <sellerInfo />
     <view class="bd">
       <categoryList />
@@ -26,8 +27,47 @@
   import CategoryList from '@/components/category-list'
   import FoodList from '@/components/food-list'
   import ShoppingCart from '@/components/shopping-cart'
+  import Loading from '@/components/loading'
+  import { connect } from 'wepy-redux'
+
+  @connect({
+    categories (state) {
+      return state.category.data
+    },
+    foods (state) {
+      return state.food.data
+    },
+    foodList (state) {
+      return state.food.list
+    }
+  })
 
   export default class Food extends wepy.page {
+    data = {
+      init: false
+    }
+
+    watch = {
+      categories (newValue, oldValue) {
+        if (this.categories && this.foods && this.foodList) {
+          this.init = true
+          this.$apply()
+        }
+      },
+      foods (newValue, oldValue) {
+        if (this.categories && this.foods && this.foodList) {
+          this.init = true
+          this.$apply()
+        }
+      },
+      foodList (newValue, oldValue) {
+        if (this.categories && this.foods && this.foodList) {
+          this.init = true
+          this.$apply()
+        }
+      }
+    }
+
     config = {
       navigationBarTitleText: '菜单'
     }
@@ -36,7 +76,8 @@
       sellerInfo: SellerInfo,
       categoryList: CategoryList,
       foodList: FoodList,
-      shoppingCart: ShoppingCart
+      shoppingCart: ShoppingCart,
+      loadingView: Loading
     }
   }
 

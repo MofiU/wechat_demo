@@ -131,8 +131,9 @@
 
 <script>
   import wepy from 'wepy'
-  import { connect } from 'wepy-redux'
+  import { connect, getStore } from 'wepy-redux'
   import { ADD, SUBTRACT } from '../store/types/cart'
+  import { getProductByCategory } from '../api/product'
 
   @connect({
     cartData (state) {
@@ -140,6 +141,9 @@
     },
     foods (state) {
       return state.food.data
+    },
+    currentCategoryId (state) {
+      return state.category.currentCategoryId
     }
   }, {
     add: ADD,
@@ -148,7 +152,18 @@
 
   export default class FoodList extends wepy.component {
     data = {
-      scrollHeight: 0
+      scrollHeight: 0,
+      hideLoading: false
+    }
+
+    watch = {
+      currentCategoryId (newCategoryId, oldCategoryId) {
+        const store = getStore()
+        getProductByCategory(newCategoryId).then((data) => {
+          delete data.length
+          store.dispatch({type: 'LOAD_PRODUCT', payload: Object.values(data)})
+        })
+      }
     }
 
     onLoad () {
