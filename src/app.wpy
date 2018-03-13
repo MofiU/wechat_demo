@@ -165,7 +165,8 @@ export default class extends wepy.app {
       'pages/food',
       'pages/order/checkout',
       'pages/order/list',
-      'pages/order/remark'
+      'pages/order/remark',
+      'pages/member/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -187,13 +188,13 @@ export default class extends wepy.app {
           iconPath: 'images/icon_cate.png',
           selectedIconPath: 'images/icon_cate_selected.png',
           text: '订单'
+        },
+        {
+          pagePath: 'pages/member/index',
+          iconPath: 'images/icon_member.png',
+          selectedIconPath: 'images/icon_member_selected.png',
+          text: '我的'
         }
-        // {
-        //   pagePath: 'member/index/index',
-        //   iconPath: 'images/icon_member.png',
-        //   selectedIconPath: 'images/icon_member_selected.png',
-        //   text: '我的'
-        // }
       ]
     }
   }

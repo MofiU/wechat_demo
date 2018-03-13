@@ -158,11 +158,13 @@
 
     watch = {
       currentCategoryId (newCategoryId, oldCategoryId) {
+        wepy.showLoading()
         const store = getStore()
         getProductByCategory(newCategoryId).then((data) => {
           delete data.length
           store.dispatch({type: 'LOAD_PRODUCT', payload: Object.values(data)})
         })
+        wepy.hideLoading()
       }
     }
 
