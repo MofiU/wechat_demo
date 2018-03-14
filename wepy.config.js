@@ -24,6 +24,9 @@ module.exports = {
     less: {
       compress: prod
     },
+    sass: {
+      outputStyle: 'compact'
+    },
     /*sass: {
       outputStyle: 'compressed'
     },*/

@@ -43,6 +43,7 @@
   .seller {
     font-weight: bold;
     font-size: 18px;
+    display: flex;
   }
 
   /*公告*/
@@ -57,13 +58,37 @@
     font-size: 12px;
   }
 
+  .seller-name {
+    width: 30%
+  }
+
+  .location{
+    width: 70%;
+    font-size: 12px;
+    font-weight: lighter;
+
+  }
 </style>
 <template>
   <!-- 店招 -->
   <view class="hd">
     <image class="logo" src="{{seller.logo.url}}" />
     <view class="banner">
-      <view class="seller">{{seller.name}}</view>
+      <view class="seller">
+        <view class="seller-name">
+          <!-- <image src="../images/address.png" /> -->
+          {{seller.name}}
+        </view>
+        <view class="location">
+          <view class="weui-cell weui-cell_select">
+              <view class="weui-cell__bd">
+                  <picker value="{{accountIndex}}" range="{{accounts}}" @change="accountChange">
+                      <view class="weui-select">{{accounts[accountIndex]}}</view>
+                  </picker>
+              </view>
+          </view>
+        </view>
+      </view>
       <view class="notice">{{seller.notice}}</view>
       <view class="business-time">营业时间 {{seller.business_start}} - {{seller.business_end}}</view>
     </view>
@@ -80,6 +105,16 @@
   })
 
   export default class SellerInfo extends wepy.component {
+    data = {
+      accounts: ['新城市店', '黑沙环店', '璐環店'],
+      accountIndex: 0
+    }
 
+    methods = {
+      accountChange (e) {
+        this.accountIndex = e.detail.value
+        this.$apply()
+      }
+    }
   }
 </script>
