@@ -86,9 +86,9 @@
   }
 
   /*单位*/
-  .account .item .credit:after {
-    content: '分';
-  }
+  // .account .item .credit:after {
+  //   content: '分';
+  // }
 
   /*标签*/
   .account .item .caption {
@@ -166,22 +166,30 @@
   <!-- 账户 -->
   <view class="account">
     <view class="item">
-      <view class="value balance">0.00</view>
+      <view class="value balance">0</view>
       <view class="caption">余额</view>
     </view>
     <view class="item">
       <view class="value coupon">0</view>
-      <view class="caption">优惠</view>
+      <view class="caption">优惠券</view>
     </view>
     <view class="item">
-      <view class="value credit">0</view>
-      <view class="caption">积分</view>
+      <view class="value credit">{{ledger.balance}}{{ledger.label}}</view>
+      <view class="caption">{{ledger.level}}</view>
     </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import { getLedger } from '../../api/ledger'
+  import { connect, getStore } from 'wepy-redux'
+
+  @connect({
+    ledger (state) {
+      return state.ledger
+    }
+  })
 
   export default class Index extends wepy.page {
     config = {
@@ -198,6 +206,18 @@
       wepy.getUserInfo().then((res) => {
         this.userInfo = res.userInfo
         this.$apply()
+      }, (error) => {
+        console.error('error', error)
+      })
+    }
+
+    onShow () {
+      const store = getStore()
+      getLedger().then((res) => {
+        store.dispatch({
+          type: 'LOAD_LEDGER',
+          payload: res
+        })
       }, (error) => {
         console.error('error', error)
       })

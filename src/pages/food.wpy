@@ -69,7 +69,7 @@
     }
 
     config = {
-      navigationBarTitleText: '菜单'
+      navigationBarTitleText: '主页'
     }
 
     components = {
