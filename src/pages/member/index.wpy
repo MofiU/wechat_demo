@@ -159,7 +159,7 @@
   <!-- 个人信息 -->
   <view class="summary">
     <!-- <view class="avatar-container"> -->
-      <image src="{{userInfo.avatarUrl ? userInfo.avatarUrl : '/images/default-avatar.png'}}" class="avatar" />
+      <image src="{{userInfo.avatarUrl ? userInfo.avatarUrl : '/images/default-avatar.png'}}" class="avatar" @tap="login" />
     <!-- </view> -->
       <view class="nickname">{{userInfo.nickName}}</view>
   </view>
@@ -198,17 +198,58 @@
 
     data = {
       userInfo: {
-        nickName: '加载中...'
+        nickName: '未登录'
+      }
+    }
+
+    methods = {
+      login () {
+        wepy.login().then((res) => {
+          wepy.getUserInfo().then((res) => {
+            wepy.setStorageSync('userInfo', res.userInfo)
+            this.userInfo = res.userInfo
+            this.$apply()
+          }, (error) => {
+            console.log('user reject userinfo', error)
+            wepy.showModal({
+              title: '授权失败',
+              content: '如果想授权用户信息请点击确认'
+            }).then((res) => {
+              if (res.confirm) {
+                wepy.openSetting().then((res) => {
+                  console.log('openSetting')
+                  if (res) {
+                    if (res.authSetting['scope.userInfo']) {
+                      console.log('用户授权成功')
+                      wepy.getUserInfo().then((res) => {
+                        wepy.setStorageSync('userInfo', res.userInfo)
+                        this.userInfo = res.userInfo
+                        this.$apply()
+                      })
+                    } else {
+                      console.log('木有授权用户信息')
+                    }
+                  }
+                }, (error) => {
+                  console.log('设置失败返回', error)
+                })
+              }
+            }, (error) => {
+              console.error('show modal error', error)
+            })
+          })
+        }, (error) => {
+          console.error('login failed', error)
+        })
       }
     }
 
     onLoad() {
-      wepy.getUserInfo().then((res) => {
-        this.userInfo = res.userInfo
+      let userInfo = wepy.getStorageSync('userInfo')
+      if (userInfo) {
+        this.userInfo = userInfo
         this.$apply()
-      }, (error) => {
-        console.error('error', error)
-      })
+      }
     }
 
     onShow () {
