@@ -105,6 +105,7 @@
 <template>
   <!-- 订单列表 -->
   <view class="order-container">
+    <zanTab :tab.sync='tabs' componentId='tabs'/>
     <scroll-view scroll-y scroll-with-animation style="height: {{scrollHeight + 'px'}}" @scrolltolower="lower">
       <!-- 每个订单 -->
       <repeat for="{{orderList}}" key="id" index="id" item="item">
@@ -114,12 +115,6 @@
             <image src="data:image/png;base64,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" class="logo" />
             <view class="summary">
               <view class="title">{{item.store}}</view>
-              <!-- <view class="status">
-                <block wx:if="{{item.status == 0}}">制作中</block>
-                <block wx:elif="{{item.status == 1}}">等待支付</block>
-                <block wx:elif="{{item.status == 2}}">派送中</block>
-                <block wx:elif="{{item.status == -1}}">已取消</block>
-              </view> -->
             </view>
           </view>
           <!-- 商品信息 -->
@@ -129,9 +124,9 @@
           </view>
           <!-- 支付按钮 -->
           <view class="payment">
-            <view class="button" @tap="showDetail">
+            <navigator url="detail?id={{item._id}}" class="button">
               查看
-            </view>
+            </navigator>
           </view>
         </view>
       </repeat>
@@ -141,34 +136,55 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
+  import ZanTab from '@/components/zanui/tab'
 
   @connect({
     orderList (state) {
       return state.order.data
-    },
-    orderTotalCount (state) {
-      return state.order.count
     }
   })
 
   export default class OrderList extends wepy.component {
     data = {
       scrollHeight: 0,
-      showLoading: true
+      showLoading: true,
+      tabs: {
+        list: [
+          {
+            id: 'all',
+            title: '全部'
+          },
+          {
+            id: '1',
+            title: '已完成'
+          }
+        ],
+        selectedId: 'all',
+        scroll: false
+      }
+    }
+
+    components = {
+      zanTab: ZanTab
     }
 
     methods = {
-      showDetail () {
-        console.log('show detail')
-      },
       lower () {
         console.log('scroll to lower')
       }
     }
 
+    events = {
+      zanTabChange(selectedId, event) {
+        let { componentId } = event.source
+        this[componentId].selectedId = selectedId
+        this.$apply()
+      }
+    }
+
     onLoad () {
       wepy.getSystemInfo().then((res) => {
-        this.scrollHeight = res.windowHeight
+        this.scrollHeight = res.windowHeight - 50
         this.$apply()
       })
     }

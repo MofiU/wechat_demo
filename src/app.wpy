@@ -1,5 +1,6 @@
 <style lang="scss" src="./styles/base.scss"></style>
 <style lang="scss" src="./styles/weui.scss"></style>
+<style lang="scss" src="./styles/zanui.scss"></style>
 
 <script>
 import wepy from 'wepy'
@@ -8,6 +9,7 @@ import 'wepy-async-function'
 import { setStore } from 'wepy-redux'
 import configStore from './store'
 import { getOrders } from './api/order'
+import { getLedger } from './api/ledger'
 
 const store = configStore()
 setStore(store)
@@ -16,10 +18,12 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/food',
+      'pages/order/detail',
       'pages/order/checkout',
       'pages/order/list',
       'pages/order/remark',
-      'pages/member/index'
+      'pages/member/index',
+      'pages/member/center'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -63,12 +67,19 @@ export default class extends wepy.app {
 
   onLaunch() {
     getOrders().then((data) => {
-      const count = data.length
-      delete data.length
       store.dispatch({
         type: 'LOAD_ORDER',
-        payload: { data: Object.values(data), count: count }
+        payload: { data: data }
       })
+    })
+
+    getLedger().then((res) => {
+      store.dispatch({
+        type: 'LOAD_LEDGER',
+        payload: res
+      })
+    }, (error) => {
+      console.error('error', error)
     })
   }
 

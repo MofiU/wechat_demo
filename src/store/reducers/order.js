@@ -9,6 +9,5 @@ export default handleActions({
     return action.payload
   }
 }, {
-  data: null,
-  count: 0
+  data: null
 })

@@ -10,7 +10,7 @@ export default handleActions({
     }
   }
 }, {
-  balance: '--',
-  level: '--',
+  balance: '加载中...',
+  level: '会员',
   label: ''
 })

@@ -10,7 +10,7 @@ export async function getOrders () {
       "customer" : {"_id": "customer/d1998552-9bf8-4b64-b85c-d8a792f469f4"}
     }
   }).then((res) => {
-    return res.data.result.salesOrderRecords
+    return res.data
   })
   return result
 }
@@ -50,6 +50,20 @@ export async function createOrder (cartData, amount) {
     data: body
   }).then((res) => {
     return res.data.result.salesOrderRecords
+  })
+  return result
+}
+
+export async function showOrder (id) {
+  let result =  await wepy.request({
+    url: host + 'merchants/customers/sales-orders/line-items',
+    method: 'POST',
+    header: header,
+    data: {
+      "salesOrder" : {"_id": id}
+    }
+  }).then((res) => {
+    return res.data
   })
   return result
 }

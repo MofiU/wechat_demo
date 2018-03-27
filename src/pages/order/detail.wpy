@@ -1,0 +1,62 @@
+<style type="less">
+  .page__bd {
+    margin: 15px 0;
+  }
+</style>
+<template>
+<loading hidden="{{loading}}">loading...</loading>
+<view class="page__bd" wx:if="{{loading}}">
+  <view class="weui-form-preview">
+    <view class="weui-form-preview__hd">
+      <view class="weui-form-preview__item">
+        <view class="weui-form-preview__label">订单总价</view>
+        <view class="weui-form-preview__value_in-hd">MOP {{orderAmount}}</view>
+      </view>
+    </view>
+    <repeat for="{{orderInfo}}" key="_id" index="_id" item="item">
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">{{item.product.name}}</view>
+          <view class="weui-form-preview__value"> x {{item.quantity}} {{item.currency}} {{item.product.pricePerUnit}} </view>
+        </view>
+      </view>
+    </repeat>
+    <view class="weui-form-preview__ft">
+      <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系商家</navigator>
+      <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">再来一单</navigator>
+    </view>
+  </view>
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { showOrder } from '@/api/order'
+
+  export default class Detail extends wepy.page {
+    data = {
+      orderInfo: [],
+      loading: false
+    }
+
+    computed = {
+      orderAmount () {
+        return this.orderInfo.length > 0 ? this.orderInfo.reduce((amount, current) => {
+          return amount + current.subTotal
+        }, 0) : 0
+      }
+    }
+
+    config = {
+      navigationBarTitleText: '订单详情'
+    }
+
+    async onLoad (options) {
+      await showOrder(options.id).then((res) => {
+        this.orderInfo = res
+        this.loading = true
+        this.$apply()
+      })
+    }
+  }
+</script>
