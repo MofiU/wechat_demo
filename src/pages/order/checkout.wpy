@@ -271,7 +271,6 @@
             // 重新加载订单
             getOrders().then((data) => {
               const count = data.length
-              delete data.length
               store.dispatch({
                 type: 'LOAD_ORDER',
                 payload: { data: Object.values(data), count: count }
