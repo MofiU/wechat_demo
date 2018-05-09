@@ -30,7 +30,7 @@
         <progress percent="{{percent}}" stroke-width="3" />
       </view>
     </view>
-    <view class="percent">{{ledger.balance}}/{{nextLevel}}{{ledger.label}}</view>
+    <view class="percent">{{ledger.balance}}/{{ledger.nextLevel}}{{ledger.label}}</view>
   </view>
 </template>
 
@@ -51,13 +51,12 @@
     }
 
     data = {
-      nextLevel: 2000,
       loading: false
     }
 
     computed = {
       percent () {
-        return this.ledger ? (this.ledger.balance / this.nextLevel) * 100 : 0
+        return this.ledger ? (this.ledger.balance / this.ledger.nextLevel) * 100 : 0
       }
     }
   }

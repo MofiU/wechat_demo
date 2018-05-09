@@ -6,11 +6,13 @@ export default handleActions({
     return {
       balance:  action.payload.ledgerLineItems[0].balance,
       label: action.payload.ledgerLineItems[0].reward.rewardType.label,
-      level: action.payload.ledgerTier.tier.name
+      level: action.payload.ledgerTier.tier.name,
+      nextLevel: action.payload.ledgerTier.nextTier.pointsRequired
     }
   }
 }, {
   balance: '加载中...',
   level: '会员',
-  label: ''
+  label: '',
+  nextLevel: '--'
 })

@@ -7,7 +7,12 @@ export async function getLedger () {
     method: 'POST',
     header: header,
     data: {
-      "customer" : {"_id": "customer/d1998552-9bf8-4b64-b85c-d8a792f469f4"}
+      "loyaltyProgram" : {
+        "_id": "loyalty_program/3840cda1-835b-496a-be1d-d6340ac7ee46"
+      },
+      "customer": {
+        "_id": "customer/e6fa0191-a3b3-473e-8f09-65207f061c14"
+      }
     }
   }).then((res) => {
     return res.data

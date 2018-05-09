@@ -10,7 +10,7 @@ export async function getOrders () {
       "customer" : {"_id": "customer/d1998552-9bf8-4b64-b85c-d8a792f469f4"}
     }
   }).then((res) => {
-    return res.data
+    return res.data.salesOrders
   })
   return result
 }
